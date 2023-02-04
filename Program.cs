@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace AzureGitHubDemo
 {
     public class Program
@@ -13,11 +15,21 @@ namespace AzureGitHubDemo
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            var connStr = builder.Configuration.GetConnectionString("AzureGitHubDemoConnection");
+            builder.Services.AddDbContext<AzureGitHubDemoDbContext>(opt =>
+            {
+                opt.UseSqlServer(connStr).EnableDetailedErrors().EnableSensitiveDataLogging();
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiManagemtDemo v1");
+                x.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
