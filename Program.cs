@@ -16,6 +16,7 @@ namespace AzureGitHubDemo
             builder.Services.AddSwaggerGen();
 
             var connStr = builder.Configuration.GetConnectionString("AzureGitHubDemoConnection");
+            ConfManager.AdoNetConnStr = connStr;
             builder.Services.AddDbContext<AzureGitHubDemoDbContext>(opt =>
             {
                 opt.UseSqlServer(connStr).EnableDetailedErrors().EnableSensitiveDataLogging();

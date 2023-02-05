@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AzureGitHubDemo
 {
+    public static class ConfManager
+    {
+        public static string AdoNetConnStr { get; set; }
+    }
     public class Skill
     {
         [Key]

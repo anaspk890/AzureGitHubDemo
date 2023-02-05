@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
 using System.Net;
 
 namespace AzureGitHubDemo.Controllers
@@ -21,7 +22,21 @@ namespace AzureGitHubDemo.Controllers
             string message = string.Empty;
             try
             {
-                var result = db.Skills.ToList();
+                SqlConnection con = new SqlConnection(ConfManager.AdoNetConnStr);
+                SqlCommand cmd = con.CreateCommand();
+                cmd.CommandText = "Select * from Skill";
+                con.Open();
+                var rdr = await cmd.ExecuteReaderAsync();
+                List<Skill> skills = new List<Skill>(); 
+                while(rdr.Read())
+                {
+                    skills.Add(new Skill
+                    {
+                        Id = Convert.ToInt32(rdr["Id"]),
+                        Name= Convert.ToString(rdr["Name"])
+                    });
+                }
+                var result = skills;
                 return Ok(result);
             }
             catch (Exception ex)
