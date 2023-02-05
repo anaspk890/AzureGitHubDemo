@@ -6,6 +6,81 @@ namespace AzureGitHubDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    public class SkillController : ControllerBase
+    {
+        private readonly AzureGitHubDemoDbContext db;
+
+        public SkillController(AzureGitHubDemoDbContext db)
+        {
+            this.db = db;
+        }
+        [HttpGet]
+        [Route("GetAllSkills")]
+        public async Task<IActionResult> GetAllSkills()
+        {
+            string message = string.Empty;
+            try
+            {
+                var result = db.Skills.ToList();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message + Environment.NewLine;
+                message += ex.InnerException?.Message + Environment.NewLine;
+                message += ex.StackTrace;
+                Response.WriteAsJsonAsync(message);
+            }
+            return UnprocessableEntity(message);
+
+        }
+
+        [HttpGet]
+        [Route("GetSkillById")]
+        public async Task<IActionResult> GetSkillById(int Id)
+        {
+            string message = string.Empty;
+            try
+            {
+                var result = db.Skills.FirstOrDefault(x => x.Id == Id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message + Environment.NewLine;
+                message += ex.InnerException?.Message + Environment.NewLine;
+                message += ex.StackTrace;
+                Response.WriteAsJsonAsync(message);
+            }
+            return UnprocessableEntity(message);
+        }
+
+        [HttpPost]
+        [Route("Create")]
+        public async Task<IActionResult> Post(Skill obj)
+        {
+            string message = string.Empty;
+            try
+            {
+                db.Skills.Add(obj);
+                db.SaveChanges();
+                var uri = new Uri(Url.ActionLink(nameof(GetSkillById), "Skill", new { Id = obj.Id }));
+                string url = uri.ToString();
+                return new CreatedResult(url, obj);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message + Environment.NewLine;
+                message += ex.InnerException?.Message + Environment.NewLine;
+                message += ex.StackTrace;
+                Response.WriteAsJsonAsync(message);
+            }
+            return UnprocessableEntity(message);
+        }
+    }
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class EmployeeController : ControllerBase
     {
         private readonly AzureGitHubDemoDbContext db;

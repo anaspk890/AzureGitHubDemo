@@ -3,6 +3,7 @@ using AzureGitHubDemo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureGitHubDemo.Migrations
 {
     [DbContext(typeof(AzureGitHubDemoDbContext))]
-    partial class AzureGitHubDemoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230205062119_Skills-Added")]
+    partial class SkillsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

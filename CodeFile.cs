@@ -3,6 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AzureGitHubDemo
 {
+    public class Skill
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public class Employee
     {
         [Key]
@@ -27,6 +33,8 @@ namespace AzureGitHubDemo
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Skill>(x=>x.ToTable(nameof(Skill)));
+
             modelBuilder.Entity<Employee>(x => x.HasData(new Employee[]{
                 new Employee{ Id = 1,Name = "Name-101"},
                 new Employee{ Id = 2,Name = "Name-102"},
@@ -39,10 +47,17 @@ namespace AzureGitHubDemo
                 new Department{ Id = 3,Name = "Department-103"},
             }));
 
+            modelBuilder.Entity<Skill>(x => x.HasData(new Skill[]{
+                new Skill{ Id = 1,Name = "Skill-1"},
+                new Skill{ Id = 2,Name = "Skill-2"},
+                new Skill{ Id = 3,Name = "Skill-3"},
+            }));
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Skill> Skills { get; set; }
     }
 }

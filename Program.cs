@@ -23,6 +23,11 @@ namespace AzureGitHubDemo
 
             var app = builder.Build();
 
+            using(var scope = app.Services.CreateScope())
+            {
+                var dbConext = scope.ServiceProvider.GetRequiredService<AzureGitHubDemoDbContext>();
+                dbConext.Database.Migrate();
+            };
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(x =>
